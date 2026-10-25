@@ -1,0 +1,23 @@
+Component,Qty,Native file,Notes
+Base,1,parts/base.kcl,440x440x12mm
+Tank shelf,1,parts/shelf.kcl,210x210x15mm
+Support posts,4,parts/post.kcl,18x18x213mm
+Tank,1,parts/tank.kcl,OD180x180mm wall4mm; full geometry preserved
+Tank lid,1,parts/lid.kcl,OD186x6mm; inlet and sensor holes
+Inlet stub,1,parts/inlet.kcl,OD20 ID14 length55mm
+Outlet pipe,1,parts/outlet.kcl,OD20 ID14 length40mm
+Flow sensor envelope,1,parts/flowSensor.kcl,OD36 length50mm; vendor TBD
+Tap body,1,parts/tap.kcl,Bored envelope; valve internals not designed
+Tap handle,1,parts/handle.kcl,Independent parameter-driven rotation
+Level probe envelope,1,parts/levelSensor.kcl,OD25 length18mm; vendor TBD
+Probe collar,1,main.kcl,OD34 ID25x3mm
+Outlet seal envelope,1,main.kcl,OD28 ID20x3mm; compression fit not validated
+Catch basin,1,parts/basin.kcl,OD88x55mm; small demonstration vessel
+Electronics enclosure,1,parts/enclosure.kcl,130x140x70mm; open service view
+PCB blank,1,parts/pcb.kcl,110x110x1.6mm; no routing
+PCB spacers,4,parts/spacer.kcl,OD7 ID3.4 length9mm
+MCU and buzzer,2,parts/microcontroller.kcl + parts/buzzer.kcl,Key package envelopes; electrical BOM separate
+Connectors and key power packages,7,main.kcl,Placement envelopes only
+Status indicator,1,main.kcl,Red green visual state
+Water markers,variable,main.kcl,Presentation geometry only; not BOM purchase items
+Fasteners and harness,not selected,none,Unresolved mechanical design scope

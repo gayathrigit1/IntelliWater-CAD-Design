@@ -1,0 +1,714 @@
+// IntelliWater reference-picture assembly
+// Two-tap wooden demonstration cabinet; water and dashboard are static demo states.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import tankPart, lidPart, inletPart, levelSensorPart, tapPart, handlePart, flowSensorPart, pcbPart, microcontrollerPart, buzzerPart, roundBody, tubeBody, panelBody from "reference/main.kcl"
+import elbowPart, manifoldPart, sinkPart, bowlPart, binPart from "reference/main.kcl"
+import tapOn, highFlow, waterHeight, buzzerAlert, thresholdMinutes, demoFlowLitresPerMinute, demoUsedLitres, flowing from "demo.kcl"
+
+cabinetWidth = 600mm
+cabinetDepth = 360mm
+cabinetHeight = 460mm
+boardThickness = 14mm
+showLabels = true
+cutawayReview = true
+woodColor = "#B9854D"
+
+base = panelBody(width = cabinetWidth + 20mm, depth = cabinetDepth + 10mm, height = boardThickness)
+  |> appearance(color = woodColor)
+leftWall = panelBody(width = boardThickness, depth = cabinetDepth, height = cabinetHeight - boardThickness)
+  |> translate(x = -293mm, z = boardThickness, global = true)
+  |> appearance(color = woodColor)
+rightWall = clone(leftWall)
+  |> translate(x = 586mm, global = true)
+back = panelBody(width = 572mm, depth = 8mm, height = 446mm)
+  |> translate(y = 176mm, z = 14mm, global = true)
+  |> appearance(color = "#996535")
+centerDivider = panelBody(width = 12mm, depth = 352mm, height = 310mm)
+  |> translate(
+       x = -65mm,
+       y = -4mm,
+       z = 14mm,
+       global = true,
+     )
+  |> appearance(color = woodColor)
+electronicsDivider = panelBody(width = 12mm, depth = 352mm, height = 446mm)
+  |> translate(
+       x = 165mm,
+       y = -4mm,
+       z = 14mm,
+       global = true,
+     )
+  |> appearance(color = woodColor)
+topBlank = panelBody(width = 620mm, depth = 370mm, height = 14mm)
+  |> translate(z = cabinetHeight, global = true)
+pipeClearance = roundBody(rad = 12mm, height = 16mm)
+  |> translate(
+       x = -40mm,
+       y = -110mm,
+       z = 459mm,
+       global = true,
+     )
+top = subtract([topBlank], tools = [pipeClearance])
+  |> appearance(color = "#C79B64")
+cradleLeft = panelBody(width = 14mm, depth = 190mm, height = 40mm)
+  |> translate(x = -137mm, z = 474mm, global = true)
+  |> appearance(color = woodColor)
+cradleRight = clone(cradleLeft)
+  |> translate(x = 194mm, global = true)
+cradleFloor = panelBody(width = 180mm, depth = 180mm, height = 6mm)
+  |> translate(x = -40mm, z = 474mm, global = true)
+  |> appearance(color = woodColor)
+
+placedTank = tankPart
+  |> translate(x = -40mm, z = 480mm, global = true)
+tank = if cutawayReview {
+  reviewWindow = panelBody(width = 184mm, depth = 95mm, height = 145mm)
+    |> translate(
+         x = -40mm,
+         y = -60mm,
+         z = 512mm,
+         global = true,
+       )
+  subtract([placedTank], tools = [reviewWindow])
+    |> appearance(color = "#C7DFE5", roughness = 20)
+} else {
+  placedTank
+}
+water = roundBody(rad = 85.7mm, height = waterHeight)
+  |> translate(x = -40mm, z = 484mm, global = true)
+  |> appearance(color = "#087BC4", roughness = 15)
+lid = lidPart
+  |> translate(x = -40mm, z = 660mm, global = true)
+  |> appearance(color = "#0069BD", roughness = 15)
+lidGrip = tubeBody(outerRad = 89mm, innerRad = 80mm, height = 10mm)
+  |> translate(x = -40mm, z = 666mm, global = true)
+  |> appearance(color = "#007CD5")
+inlet = inletPart
+  |> translate(
+       x = -80mm,
+       y = 30mm,
+       z = 650mm,
+       global = true,
+     )
+levelSensor = levelSensorPart
+  |> translate(x = -5mm, z = 651mm, global = true)
+outlet = tubeBody(outerRad = 10mm, innerRad = 7mm, height = 15mm)
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(
+       x = -40mm,
+       y = -75mm,
+       z = 500mm,
+       global = true,
+     )
+  |> appearance(color = "#86A9BF")
+tankElbow = elbowPart
+  |> rotate(axis = Y, angle = 180deg, global = true)
+  |> rotate(axis = Z, angle = 90deg, global = true)
+  |> translate(
+       x = -40mm,
+       y = -90mm,
+       z = 480mm,
+       global = true,
+     )
+mainDrop = tubeBody(outerRad = 10mm, innerRad = 7mm, height = 30mm)
+  |> translate(
+       x = -40mm,
+       y = -110mm,
+       z = 450mm,
+       global = true,
+     )
+  |> appearance(color = "#86A9BF")
+mainSensor = flowSensorPart
+  |> translate(
+       x = -40mm,
+       y = -110mm,
+       z = 400mm,
+       global = true,
+     )
+  |> appearance(color = "#202D36")
+manifold = manifoldPart
+  |> translate(
+       x = -40mm,
+       y = -110mm,
+       z = 380mm,
+       global = true,
+     )
+kitchenBend = clone(tankElbow)
+  |> translate(
+       x = 40mm,
+       y = 90mm,
+       z = -480mm,
+       global = true,
+     )
+  |> rotate(axis = Z, angle = -90deg, global = true)
+  |> rotate(axis = Y, angle = 180deg, global = true)
+  |> rotate(axis = Y, angle = 180deg, global = true)
+  |> translate(
+       x = -160mm,
+       y = -110mm,
+       z = 360mm,
+       global = true,
+     )
+bathroomBend = clone(tankElbow)
+  |> translate(
+       x = 40mm,
+       y = 90mm,
+       z = -480mm,
+       global = true,
+     )
+  |> rotate(axis = Z, angle = -90deg, global = true)
+  |> rotate(axis = Y, angle = 180deg, global = true)
+  |> rotate(axis = X, angle = 180deg, global = true)
+  |> translate(
+       x = 30mm,
+       y = -110mm,
+       z = 360mm,
+       global = true,
+     )
+kitchenSensor = clone(mainSensor)
+  |> translate(
+       x = 40mm,
+       y = 110mm,
+       z = -400mm,
+       global = true,
+     )
+  |> translate(
+       x = -180mm,
+       y = -110mm,
+       z = 310mm,
+       global = true,
+     )
+  |> appearance(color = "#26313A")
+bathroomSensor = clone(mainSensor)
+  |> translate(
+       x = 40mm,
+       y = 110mm,
+       z = -400mm,
+       global = true,
+     )
+  |> translate(
+       x = 50mm,
+       y = -110mm,
+       z = 310mm,
+       global = true,
+     )
+  |> appearance(color = "#26313A")
+kitchenTail = tubeBody(outerRad = 10mm, innerRad = 7mm, height = 10mm)
+  |> translate(
+       x = -180mm,
+       y = -110mm,
+       z = 300mm,
+       global = true,
+     )
+  |> appearance(color = "#86A9BF")
+bathroomTail = clone(kitchenTail)
+  |> translate(x = 230mm, global = true)
+kitchenFeed = clone(tankElbow)
+  |> translate(
+       x = 40mm,
+       y = 90mm,
+       z = -480mm,
+       global = true,
+     )
+  |> rotate(axis = Z, angle = -90deg, global = true)
+  |> rotate(axis = Y, angle = 180deg, global = true)
+  |> rotate(axis = Z, angle = 90deg, global = true)
+  |> translate(
+       x = -180mm,
+       y = -130mm,
+       z = 300mm,
+       global = true,
+     )
+bathroomFeed = clone(tankElbow)
+  |> translate(
+       x = 40mm,
+       y = 90mm,
+       z = -480mm,
+       global = true,
+     )
+  |> rotate(axis = Z, angle = -90deg, global = true)
+  |> rotate(axis = Y, angle = 180deg, global = true)
+  |> rotate(axis = Z, angle = 90deg, global = true)
+  |> translate(
+       x = 50mm,
+       y = -130mm,
+       z = 300mm,
+       global = true,
+     )
+kitchenTap = tapPart
+  |> translate(
+       x = -180mm,
+       y = -130mm,
+       z = 280mm,
+       global = true,
+     )
+  |> appearance(color = "#B9C6CF", metalness = 35, roughness = 25)
+bathroomTap = clone(kitchenTap)
+  |> translate(
+       x = 180mm,
+       y = 130mm,
+       z = -280mm,
+       global = true,
+     )
+  |> translate(
+       x = 50mm,
+       y = -130mm,
+       z = 280mm,
+       global = true,
+     )
+  |> appearance(color = "#B9C6CF", metalness = 35, roughness = 25)
+handleAngle = if tapOn {
+  0deg
+} else {
+  90deg
+}
+kitchenHandle = handlePart
+  |> rotate(axis = Z, angle = handleAngle, global = true)
+  |> translate(
+       x = -180mm,
+       y = -144mm,
+       z = 306mm,
+       global = true,
+     )
+  |> appearance(color = "#156FAB")
+bathroomHandle = clone(kitchenHandle)
+  |> translate(
+       x = 180mm,
+       y = 144mm,
+       z = -306mm,
+       global = true,
+     )
+  |> translate(
+       x = 50mm,
+       y = -144mm,
+       z = 306mm,
+       global = true,
+     )
+  |> appearance(color = "#156FAB")
+
+sinkShelfBlank = panelBody(width = 215mm, depth = 352mm, height = 12mm)
+  |> translate(
+       x = -178.5mm,
+       y = -4mm,
+       z = 183mm,
+       global = true,
+     )
+sinkOpening = panelBody(width = 168mm, depth = 126mm, height = 14mm)
+  |> translate(
+       x = -180mm,
+       y = -110mm,
+       z = 182mm,
+       global = true,
+     )
+sinkShelf = subtract([sinkShelfBlank], tools = [sinkOpening])
+  |> appearance(color = woodColor)
+kitchenSink = sinkPart
+  |> translate(
+       x = -180mm,
+       y = -110mm,
+       z = 160mm,
+       global = true,
+     )
+  |> appearance(color = "#A5B1B9", metalness = 25, roughness = 25)
+bowlShelfBlank = panelBody(width = 218mm, depth = 352mm, height = 12mm)
+  |> translate(
+       x = 50mm,
+       y = -4mm,
+       z = 158mm,
+       global = true,
+     )
+bowlDrainHole = roundBody(rad = 10mm, height = 14mm)
+  |> translate(
+       x = 50mm,
+       y = -110mm,
+       z = 157mm,
+       global = true,
+     )
+bowlShelf = subtract([bowlShelfBlank], tools = [bowlDrainHole])
+  |> appearance(color = woodColor)
+bathroomBowl = bowlPart
+  |> translate(
+       x = 50mm,
+       y = -110mm,
+       z = 170mm,
+       global = true,
+     )
+kitchenBin = binPart
+  |> translate(
+       x = -180mm,
+       y = -100mm,
+       z = 14mm,
+       global = true,
+     )
+bathroomBin = clone(kitchenBin)
+  |> translate(
+       x = 180mm,
+       y = 100mm,
+       z = -14mm,
+       global = true,
+     )
+  |> translate(
+       x = 50mm,
+       y = -100mm,
+       z = 14mm,
+       global = true,
+     )
+kitchenDrain = tubeBody(outerRad = 9mm, innerRad = 7mm, height = 65mm)
+  |> translate(
+       x = -180mm,
+       y = -110mm,
+       z = 95mm,
+       global = true,
+     )
+  |> appearance(color = "#BDC9D1")
+bathroomDrain = tubeBody(outerRad = 9mm, innerRad = 7mm, height = 75mm)
+  |> translate(
+       x = 50mm,
+       y = -110mm,
+       z = 95mm,
+       global = true,
+     )
+  |> appearance(color = "#BDC9D1")
+streamRadius = if highFlow {
+  3.5mm
+} else {
+  2mm
+}
+kitchenStream = if flowing {
+  roundBody(rad = streamRadius, height = 76mm)
+    |> translate(
+         x = -180mm,
+         y = -164mm,
+         z = 162mm,
+         global = true,
+       )
+    |> appearance(color = "#0099F0")
+} else {
+  []
+}
+bathroomStream = if flowing {
+  roundBody(rad = streamRadius, height = 45mm)
+    |> translate(
+         x = 50mm,
+         y = -164mm,
+         z = 193mm,
+         global = true,
+       )
+    |> appearance(color = "#0099F0")
+} else {
+  []
+}
+
+controllerMount = panelBody(width = 108mm, depth = 12mm, height = 145mm)
+  |> translate(
+       x = 229mm,
+       y = 0mm,
+       z = 270mm,
+       global = true,
+     )
+  |> appearance(color = "#36434D")
+controllerBoard = pcbPart
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(
+       x = 229mm,
+       y = -6mm,
+       z = 342mm,
+       global = true,
+     )
+  |> appearance(color = "#00517C")
+microcontroller = microcontrollerPart
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(
+       x = 229mm,
+       y = -7.6mm,
+       z = 342mm,
+       global = true,
+     )
+flowTerminal = panelBody(width = 30mm, depth = 12mm, height = 10mm)
+  |> translate(
+       x = 205mm,
+       y = -15mm,
+       z = 302mm,
+       global = true,
+     )
+  |> appearance(color = "#39A35C")
+levelTerminal = panelBody(width = 24mm, depth = 12mm, height = 10mm)
+  |> translate(
+       x = 251mm,
+       y = -15mm,
+       z = 302mm,
+       global = true,
+     )
+  |> appearance(color = "#39A35C")
+buzzer = buzzerPart
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(
+       x = 229mm,
+       y = -6mm,
+       z = 250mm,
+       global = true,
+     )
+indicatorPanel = panelBody(width = 108mm, depth = 12mm, height = 74mm)
+  |> translate(
+       x = 229mm,
+       y = 0mm,
+       z = 176mm,
+       global = true,
+     )
+  |> appearance(color = "#36434D")
+redIndicator = roundBody(rad = 6mm, height = 6mm)
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(
+       x = 229mm,
+       y = -6mm,
+       z = 224mm,
+       global = true,
+     )
+  |> appearance(color = if buzzerAlert {
+    "#FF2626"
+  } else {
+    "#8C2525"
+  })
+greenIndicator = roundBody(rad = 6mm, height = 6mm)
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(
+       x = 229mm,
+       y = -6mm,
+       z = 195mm,
+       global = true,
+     )
+  |> appearance(color = "#15CB63")
+electronicsShelf = panelBody(width = 115mm, depth = 352mm, height = 12mm)
+  |> translate(
+       x = 228.5mm,
+       y = -4mm,
+       z = 164mm,
+       global = true,
+     )
+  |> appearance(color = woodColor)
+powerEnvelope = panelBody(width = 75mm, depth = 105mm, height = 124mm)
+  |> translate(
+       x = 229mm,
+       y = 0mm,
+       z = 14mm,
+       global = true,
+     )
+  |> appearance(color = "#202A33")
+
+controllerLowerBracket = panelBody(width = 108mm, depth = 166mm, height = 10mm)
+  |> translate(
+       x = 229mm,
+       y = 89mm,
+       z = 280mm,
+       global = true,
+     )
+  |> appearance(color = "#36434D")
+controllerUpperBracket = clone(controllerLowerBracket)
+  |> translate(z = 125mm, global = true)
+headerLeft = panelBody(width = 6mm, depth = 7mm, height = 80mm)
+  |> translate(
+       x = 185mm,
+       y = -11.1mm,
+       z = 302mm,
+       global = true,
+     )
+  |> appearance(color = "#242832")
+headerRight = clone(headerLeft)
+  |> translate(x = 88mm, global = true)
+headerPin = roundBody(rad = 0.7mm, height = 2mm)
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(
+       x = 185mm,
+       y = -14.6mm,
+       z = 305mm,
+       global = true,
+     )
+  |> appearance(color = "#D6AA46")
+headerPins = patternLinear3d(
+  headerPin,
+  instances = 16,
+  distance = 4.8mm,
+  axis = Z,
+)
+headerPinsRight = clone(headerPins)
+  |> translate(x = 88mm, global = true)
+regulatorEnvelope = panelBody(width = 10mm, depth = 3mm, height = 10mm)
+  |> translate(
+       x = 210mm,
+       y = -9.1mm,
+       z = 368mm,
+       global = true,
+     )
+  |> appearance(color = "#242832")
+capacitorEnvelope = roundBody(rad = 4mm, height = 10mm)
+  |> rotate(axis = X, angle = 90deg, global = true)
+  |> translate(
+       x = 252mm,
+       y = -7.6mm,
+       z = 375mm,
+       global = true,
+     )
+  |> appearance(color = "#303B43")
+kitchenSupport = roundBody(rad = 3mm, height = 264mm)
+  |> rotate(axis = X, angle = -90deg, global = true)
+  |> translate(
+       x = -180mm,
+       y = -92mm,
+       z = 335mm,
+       global = true,
+     )
+  |> appearance(color = "#555D62")
+bathroomSupport = clone(kitchenSupport)
+  |> translate(x = 230mm, global = true)
+mainSensorSupport = clone(kitchenSupport)
+  |> translate(x = 140mm, z = 90mm, global = true)
+
+phoneStand = panelBody(width = 145mm, depth = 100mm, height = 16mm)
+  |> translate(x = 440mm, y = 0mm, global = true)
+  |> appearance(color = "#865633")
+phoneFrame = panelBody(width = 135mm, depth = 12mm, height = 270mm)
+  |> translate(
+       x = 440mm,
+       y = 8mm,
+       z = 16mm,
+       global = true,
+     )
+  |> appearance(color = "#18232D")
+phoneScreen = panelBody(width = 123mm, depth = 1mm, height = 250mm)
+  |> translate(
+       x = 440mm,
+       y = 1.5mm,
+       z = 26mm,
+       global = true,
+     )
+  |> appearance(color = "#153E56")
+
+labels = if showLabels {
+  gdt::note(
+    note = "INTELLIWATER | REFERENCE PROTOTYPE",
+    framePlane = XZ,
+    framePosition = [-290mm, 755mm],
+    fontSize = 12mm,
+  )
+  gdt::note(
+    note = "600 W x 360 D x 460 H mm CABINET | NOMINAL",
+    framePlane = XZ,
+    framePosition = [-290mm, -30mm],
+    fontSize = 8mm,
+  )
+  gdt::annotation(
+    faces = [water.faces.endCap],
+    annotation = "WATER TANK | CUTAWAY",
+    framePlane = XZ,
+    framePosition = [-210mm, 55mm],
+    fontSize = 8mm,
+  )
+  gdt::annotation(
+    faces = [levelSensor.faces.endCap],
+    annotation = "LEVEL SENSOR",
+    framePlane = XZ,
+    framePosition = [110mm, 25mm],
+    fontSize = 8mm,
+  )
+  gdt::annotation(
+    faces = [inlet.faces.endCap],
+    annotation = "INLET",
+    framePlane = XZ,
+    framePosition = [-190mm, 5mm],
+    fontSize = 8mm,
+  )
+  gdt::annotation(
+    faces = [mainSensor.faces.endCap],
+    annotation = "MAIN FLOW SENSOR",
+    framePlane = XZ,
+    framePosition = [110mm, 0mm],
+    fontSize = 8mm,
+  )
+  gdt::annotation(
+    faces = [kitchenHandle.faces.endCap],
+    annotation = "KITCHEN TAP",
+    framePlane = XZ,
+    framePosition = [-160mm, 10mm],
+    fontSize = 8mm,
+  )
+  gdt::annotation(
+    faces = [bathroomHandle.faces.endCap],
+    annotation = "BATHROOM TAP",
+    framePlane = XZ,
+    framePosition = [0mm, -55mm],
+    fontSize = 8mm,
+  )
+  gdt::annotation(
+    faces = [controllerBoard.faces.endCap],
+    annotation = "STM32 CONTROLLER",
+    framePlane = XZ,
+    framePosition = [100mm, 40mm],
+    fontSize = 8mm,
+  )
+  gdt::annotation(
+    faces = [buzzer.faces.endCap],
+    annotation = "BUZZER / LED",
+    framePlane = XZ,
+    framePosition = [100mm, 25mm],
+    fontSize = 8mm,
+  )
+  gdt::note(
+    note = "DEMO DASHBOARD",
+    framePlane = XZ,
+    framePosition = [380mm, 265mm],
+    fontSize = 7mm,
+  )
+  gdt::note(
+    note = "Level " + string::toString(floor(waterHeight / 176mm * 100)) + "%",
+    framePlane = XZ,
+    framePosition = [385mm, 235mm],
+    fontSize = 8mm,
+  )
+  gdt::note(
+    note = "Total " + string::toString(demoFlowLitresPerMinute) + " L/min",
+    framePlane = XZ,
+    framePosition = [385mm, 210mm],
+    fontSize = 7mm,
+  )
+  gdt::note(
+    note = "Used " + string::toString(demoUsedLitres) + " L",
+    framePlane = XZ,
+    framePosition = [385mm, 185mm],
+    fontSize = 8mm,
+  )
+  gdt::note(
+    note = "Timer " + string::toString(thresholdMinutes) + " min",
+    framePlane = XZ,
+    framePosition = [385mm, 160mm],
+    fontSize = 8mm,
+  )
+  gdt::note(
+    note =     if tapOn {
+      "TAPS: ON"
+    } else {
+      "TAPS: OFF"
+    },
+    framePlane = XZ,
+    framePosition = [385mm, 130mm],
+    fontSize = 8mm,
+  )
+  gdt::note(
+    note =     if buzzerAlert {
+      "ALERT"
+    } else {
+      "STATUS: NORMAL"
+    },
+    framePlane = XZ,
+    framePosition = [385mm, 100mm],
+    fontSize = 7mm,
+  )
+  gdt::note(
+    note = "STATIC DEMO DATA",
+    framePlane = XZ,
+    framePosition = [385mm, 55mm],
+    fontSize = 6mm,
+  )
+} else {
+  []
+}

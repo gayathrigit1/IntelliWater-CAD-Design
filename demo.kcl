@@ -1,0 +1,19 @@
+// IntelliWater demonstration controls
+// Manual state samples; not an autonomous clock, fluid solver or connected firmware.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+export tapOn = true
+export highFlow = false
+export cumulativeOnSeconds = 60
+export continuousOnSeconds = 60
+export thresholdMinutes = 5
+export initialWaterHeight = 130mm
+export tankInnerRadius = 86mm
+export retainedHeight = 20mm
+export selectedFlowLitresPerMinute = if highFlow { 1.2 } else { 0.4 }
+areaSquareMm = 3.14159265 * (tankInnerRadius / 1mm) ^ 2
+availableLitres = (initialWaterHeight - retainedHeight) / 1mm * areaSquareMm / 1000000
+export demoUsedLitres = min([availableLitres, selectedFlowLitresPerMinute * cumulativeOnSeconds / 60])
+export waterHeight = max([retainedHeight, initialWaterHeight - demoUsedLitres * 1000000 / areaSquareMm * 1mm])
+export flowing = tapOn & (waterHeight > retainedHeight + 0.01mm)
+export demoFlowLitresPerMinute = if flowing { selectedFlowLitresPerMinute } else { 0 }
+export buzzerAlert = flowing & (continuousOnSeconds >= thresholdMinutes * 60)

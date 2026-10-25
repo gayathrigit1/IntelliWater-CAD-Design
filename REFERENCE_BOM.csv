@@ -1,0 +1,30 @@
+Item,Quantity,Description,Status
+Cabinet panels,11,Base top sides back dividers and basin/electronics shelves,Nominal presentation geometry; hardware not specified
+Tank cradle,3,Two side blocks and support floor,Nominal
+Water tank,1,OD180 x 180 with 4 mm wall and outlet,Shown cutaway; no material qualification
+Tank lid,1,Blue cover with sensor and inlet holes,Nominal
+Lid grip ring,1,Blue grip,Nominal
+Inlet tube,1,OD20 ID14 x 55,Supply not modeled
+Outlet tube,1,OD20 ID14 x 15,Seal design pending
+Curved elbows,5,20 mm centerline radius OD20 ID14,Generic envelopes
+Main drop tube,1,OD20 ID14 x 30,Nominal
+Distribution manifold,1,190 mm cross pipe with upward inlet,Generic connected bores
+Flow sensor,3,Main kitchen and bathroom,Vendor selection and electrical channels pending
+Sensor support rods,3,Back-panel supports,Attachment hardware pending
+Branch tails,2,OD20 ID14 x 10,Nominal
+Tap bodies,2,Supply and drop bores,No valve cartridge
+Tap handles,2,Separate rotating levers,Linked demo state
+Kitchen sink,1,180 x 138 rim with drain,Sharp-corner tray simplification
+Bathroom bowl,1,OD130 smooth loft with drain,Nominal
+Drain tubes,2,OD18 ID14,Nominal
+Collection bins,2,168 x 138 x 90 open containers,Opaque presentation material
+Level sensor,1,Lid-mounted probe,Generic envelope
+Controller PCB,1,110 x 110 mechanical board with mounting holes,Not routed PCB
+STM32F103C8T6,1,Retained microcontroller envelope,Simplified package
+Buzzer,1,12 mm acoustic envelope,Not tested
+Indicators,2,Red and green lenses,Visual state only
+Controller mounting panels/brackets,4,Open presentation bay mounting,No sealed enclosure
+Controller headers/connectors/passives,1 set,Presentation component envelopes,Not complete electrical BOM
+Power unit envelope,1,75 x 105 x 124,Unspecified supply or battery
+Phone and stand,1 set,Dashboard presentation prop,Static demo annotations
+Water and streams,3,Visual markers only,Not manufactured parts or simulation

@@ -1,0 +1,94 @@
+// IntelliWater presentation assembly
+// Separate native parts; cutaway review and static demo water, not fluid simulation.
+@settings(defaultLengthUnit = mm, kclVersion = 3.0)
+
+import tankPart, basePart, shelfPart, postPart, lidPart, inletPart, outletPart, flowSensorPart, tapPart, handlePart, levelSensorPart, enclosurePart, pcbPart, microcontrollerPart, buzzerPart, basinPart, spacerPart, roundBody, tubeBody, panelBody from "parts/main.kcl"
+import tapOn, highFlow, waterHeight, buzzerAlert, thresholdMinutes, demoFlowLitresPerMinute, demoUsedLitres, flowing from "demo.kcl"
+
+cutawayReview = true
+transparencyEnabled = false
+showLabels = true
+base = basePart
+shelf = shelfPart |> translate(x = -90mm, y = 35mm, z = 225mm, global = true)
+firstPost = postPart |> translate(x = -181mm, y = -56mm, z = 12mm, global = true)
+postRow = patternLinear3d(firstPost, instances = 2, distance = 182mm, axis = X)
+posts = patternLinear3d(postRow, instances = 2, distance = 182mm, axis = Y)
+tankAtPosition = tankPart |> translate(x = -90mm, y = 35mm, z = 240mm, global = true)
+tankReview = if cutawayReview {
+  window = panelBody(width = 184mm, depth = 100mm, height = 145mm) |> translate(x = -90mm, y = -55mm, z = 272mm, global = true)
+  subtract([tankAtPosition], tools = [window])
+} else { tankAtPosition }
+tank = if transparencyEnabled { appearance(tankReview, color = "#9CD8E8", opacity = 20) } else { appearance(tankReview, color = "#78B8C7") }
+lid = lidPart |> translate(x = -90mm, y = 35mm, z = 420mm, global = true)
+water = roundBody(rad = 85.7mm, height = waterHeight) |> translate(x = -90mm, y = 35mm, z = 244mm, global = true) |> appearance(color = "#057AD8", roughness = 15, metalness = 15)
+inlet = inletPart |> translate(x = -130mm, y = 65mm, z = 410mm, global = true)
+levelSensor = levelSensorPart |> translate(x = -55mm, y = 35mm, z = 411mm, global = true)
+probeFlange = tubeBody(outerRad = 17mm, innerRad = 12.5mm, height = 3mm) |> translate(x = -55mm, y = 35mm, z = 426mm, global = true) |> appearance(color = "#6D45AB")
+outletAtPosition = outletPart |> rotate(axis = X, angle = 90deg, global = true) |> translate(x = -90mm, y = -50mm, z = 260mm, global = true)
+outlet = if cutawayReview {
+ sectionTool = panelBody(width = 12mm, depth = 34mm, height = 14mm) |> translate(x = -96mm, y = -72mm, z = 260mm, global = true)
+ subtract([outletAtPosition], tools = [sectionTool])
+} else { outletAtPosition }
+flowSensorAtPosition = flowSensorPart |> rotate(axis = X, angle = 90deg, global = true) |> translate(x = -90mm, y = -90mm, z = 260mm, global = true)
+flowSensor = if cutawayReview {
+ sensorSectionTool = panelBody(width = 20mm, depth = 38mm, height = 22mm) |> translate(x = -100mm, y = -115mm, z = 260mm, global = true)
+ subtract([flowSensorAtPosition], tools = [sensorSectionTool])
+} else { flowSensorAtPosition }
+tap = tapPart |> translate(x = -90mm, y = -140mm, z = 260mm, global = true)
+handleAngle = if tapOn { 0deg } else { 90deg }
+tapHandle = handlePart |> rotate(axis = Z, angle = handleAngle, global = true) |> translate(x = -90mm, y = -154mm, z = 286mm, global = true)
+seal = tubeBody(outerRad = 14mm, innerRad = 10mm, height = 3mm) |> rotate(axis = X, angle = 90deg, global = true) |> translate(x = -90mm, y = -55mm, z = 260mm, global = true) |> appearance(color = "#2C343B")
+basin = basinPart |> translate(x = -90mm, y = -174mm, z = 12mm, global = true)
+stream = if flowing {
+ roundBody(rad = if highFlow { 4mm } else { 2.3mm }, height = 202mm) |> translate(x = -90mm, y = -174mm, z = 16mm, global = true) |> appearance(color = "#008CFF", roughness = 12)
+} else { [] }
+flowCore = if flowing {
+ roundBody(rad = 5mm, height = 124mm) |> rotate(axis = X, angle = 90deg, global = true) |> translate(x = -90mm, y = -50mm, z = 260mm, global = true) |> appearance(color = "#008CFF")
+} else { [] }
+enclosure = enclosurePart |> translate(x = 125mm, y = 35mm, z = 12mm, global = true)
+spacer = spacerPart |> translate(x = 77mm, y = -13mm, z = 15mm, global = true)
+spacerRow = patternLinear3d(spacer, instances = 2, distance = 96mm, axis = X)
+spacers = patternLinear3d(spacerRow, instances = 2, distance = 96mm, axis = Y)
+pcb = pcbPart |> translate(x = 125mm, y = 35mm, z = 24mm, global = true)
+microcontroller = microcontrollerPart |> translate(x = 125mm, y = 35mm, z = 25.6mm, global = true)
+buzzer = buzzerPart |> translate(x = 165mm, y = -5mm, z = 25.6mm, global = true)
+powerConnector = panelBody(width = 15mm, depth = 10mm, height = 10mm) |> translate(x = 90mm, y = 80mm, z = 25.6mm, global = true) |> appearance(color = "#2764B2")
+flowConnector = panelBody(width = 15mm, depth = 8mm, height = 8mm) |> translate(x = 90mm, y = -10mm, z = 25.6mm, global = true) |> appearance(color = "#EB8B28")
+levelConnector = panelBody(width = 20mm, depth = 8mm, height = 8mm) |> translate(x = 120mm, y = -10mm, z = 25.6mm, global = true) |> appearance(color = "#7746B8")
+uartConnector = panelBody(width = 12mm, depth = 5mm, height = 7mm) |> translate(x = 165mm, y = 40mm, z = 25.6mm, global = true) |> appearance(color = "#2B3038")
+swdConnector = panelBody(width = 15mm, depth = 5mm, height = 7mm) |> translate(x = 165mm, y = 60mm, z = 25.6mm, global = true) |> appearance(color = "#2B3038")
+buckEnvelope = panelBody(width = 3mm, depth = 3mm, height = 1.2mm) |> translate(x = 90mm, y = 59mm, z = 25.6mm, global = true) |> appearance(color = "#22262D")
+inductor = panelBody(width = 8mm, depth = 8mm, height = 5mm) |> translate(x = 103mm, y = 59mm, z = 25.6mm, global = true) |> appearance(color = "#4A4D52")
+statusLamp = roundBody(rad = 2.5mm, height = 5mm) |> translate(x = 148mm, y = -5mm, z = 25.6mm, global = true) |> appearance(color = if buzzerAlert { "#FF3535" } else { "#1BD46B" })
+dropWater = if flowing {
+ roundBody(rad = 5mm, height = 42mm) |> translate(x = -90mm, y = -174mm, z = 218mm, global = true) |> appearance(color = "#008CFF")
+} else { [] }
+mcuLead = panelBody(width = 0.3mm, depth = 1mm, height = 0.15mm) |> translate(x = 122.25mm, y = 30.9mm, z = 25.6mm, global = true) |> appearance(color = "#B6BEC4", metalness = 60)
+mcuLeadRow = patternLinear3d(mcuLead, instances = 12, distance = 0.5mm, axis = X)
+mcuLeadOpposite = clone(mcuLeadRow) |> translate(y = 8.2mm, global = true)
+mcuLeadSide = panelBody(width = 1mm, depth = 0.3mm, height = 0.15mm) |> translate(x = 120.9mm, y = 32.25mm, z = 25.6mm, global = true) |> appearance(color = "#B6BEC4", metalness = 60)
+mcuLeadSideRow = patternLinear3d(mcuLeadSide, instances = 12, distance = 0.5mm, axis = Y)
+mcuLeadSideOpposite = clone(mcuLeadSideRow) |> translate(x = 8.2mm, global = true)
+labels = if showLabels {
+ gdt::note(note = "BASE 440 x 440 | OVERALL H465 mm | NOMINAL", framePlane = XZ, framePosition = [-200mm, -35mm], fontSize = 8mm)
+ gdt::annotation(faces = [powerConnector.faces.endCap], annotation = "J1 12V", framePlane = XY, framePosition = [0mm, 8mm], fontSize = 3mm)
+ gdt::annotation(faces = [flowConnector.faces.endCap], annotation = "J4 FLOW", framePlane = XY, framePosition = [-8mm, -12mm], fontSize = 3mm)
+ gdt::annotation(faces = [levelConnector.faces.endCap], annotation = "J5 LEVEL", framePlane = XY, framePosition = [-8mm, -12mm], fontSize = 3mm)
+ gdt::annotation(faces = [uartConnector.faces.endCap], annotation = "J2 UART", framePlane = XY, framePosition = [8mm, -5mm], fontSize = 3mm)
+ gdt::annotation(faces = [swdConnector.faces.endCap], annotation = "J3 SWD", framePlane = XY, framePosition = [8mm, 5mm], fontSize = 3mm)
+ gdt::note(note = "INTELLIWATER | DEMO DATA", framePlane = XZ, framePosition = [65mm, 400mm], fontSize = 9mm)
+ gdt::note(note = "Level: " + string::toString(floor(waterHeight / 176mm * 100)) + "%", framePlane = XZ, framePosition = [65mm, 378mm], fontSize = 8mm)
+ gdt::note(note = "Flow: " + string::toString(demoFlowLitresPerMinute) + " L/min", framePlane = XZ, framePosition = [65mm, 356mm], fontSize = 8mm)
+ gdt::note(note = "Used: " + string::toString(demoUsedLitres) + " L", framePlane = XZ, framePosition = [65mm, 334mm], fontSize = 8mm)
+ gdt::note(note = "Timer: " + string::toString(thresholdMinutes) + " min", framePlane = XZ, framePosition = [65mm, 312mm], fontSize = 8mm)
+ gdt::note(note = if buzzerAlert { "BUZZER: ALERT (visual only)" } else { "BUZZER: quiet" }, framePlane = XZ, framePosition = [65mm, 290mm], fontSize = 8mm)
+ gdt::annotation(faces = [water.faces.endCap], annotation = if cutawayReview { "TANK | OD180 x 180 | CUTAWAY" } else { "TANK | OD180 x 180" }, framePlane = XZ, framePosition = [-150mm, 65mm], fontSize = 8mm)
+ gdt::annotation(faces = [inlet.faces.endCap], annotation = "INLET | OD20 / ID14", framePlane = XZ, framePosition = [-150mm, 35mm], fontSize = 8mm)
+ gdt::annotation(faces = [levelSensor.faces.endCap], annotation = "LEVEL SENSOR", framePlane = XZ, framePosition = [110mm, 35mm], fontSize = 8mm)
+ gdt::annotation(faces = [outlet.faces.endCap], annotation = "OUTLET | ID14", framePlane = XZ, framePosition = [-150mm, 25mm], fontSize = 8mm)
+ gdt::annotation(faces = [flowSensor.faces.endCap], annotation = "FLOW SENSOR -> TAP", framePlane = XZ, framePosition = [-150mm, -25mm], fontSize = 8mm)
+ gdt::annotation(faces = [tapHandle.faces.endCap], annotation = if tapOn { "TAP ON | DEMO" } else { "TAP OFF | DEMO" }, framePlane = XZ, framePosition = [80mm, -65mm], fontSize = 8mm)
+ gdt::annotation(faces = [enclosure.faces.endCap], annotation = "ENCLOSURE | 130 x 140 x 70", framePlane = XZ, framePosition = [20mm, 130mm], fontSize = 8mm)
+ gdt::annotation(faces = [microcontroller.faces.endCap], annotation = "U1 STM32F103C8T6", framePlane = XY, framePosition = [-35mm, 18mm], fontSize = 3mm)
+ gdt::annotation(faces = [buzzer.faces.endCap], annotation = "BUZ1 ALARM", framePlane = XY, framePosition = [0mm, -18mm], fontSize = 3mm)
+} else { [] }

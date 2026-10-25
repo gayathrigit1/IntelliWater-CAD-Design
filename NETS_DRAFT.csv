@@ -1,0 +1,34 @@
+Net,Proposed endpoints,Status
++3V3,U1.1;U1.24;U1.36;U1.48;U3.2;U3.TAB;FB1.1;C8.1;C10.1;C11.1;C12.1;C13.1;C14.1;R8.1;R10.1;J2.4;J3.1;J6.1,Proposed not ERC checked
+GND,U1.8;U1.23;U1.35;U1.47;U2.1;U3.1;J1.2;J2.1;J3.2;J4.2;J5.2;Q1.2;R3.2;R5.2;R7.2;R9.2;R14.2;R15.2;C1.2;C2.2;C4.2;C5.2;C7.2;C8.2;C10.2;C11.2;C12.2;C13.2;C14.2;C15.2;C16.2;C17.2;C20.2;SW1.2;D2.A;D4.COMMON_K,Named diode and LED terminals require approved pad mapping
+VIN_RAW,J1.1;F1.1,12V regulated input assumption
+VIN_FUSED,F1.2;D1.A,Diode pad mapping pending
+VIN_PROTECTED,D1.K;D2.K;U2.3;C1.1;C2.1;R4.1,Protection device selection pending
+BUCK_EN,R4.2;R5.1;U2.5,Separate from VIN
+BUCK_SW,U2.2;L1.1;C3.2,Small switching node
+BUCK_BOOT,U2.6;C3.1,Bootstrap only
++5V,L1.2;C4.1;C5.1;R1.1;U3.3;C7.1;J4.1;J5.1;BUZ1.POS;D3.K,No GPIO on this net
+FB_FILTER,R1.2;R2.1;C6.1,Not UART_RX
+BUCK_FB,R2.2;R3.1;C6.2;U2.4,Keep away from SW
+VDDA,FB1.2;U1.9;C15.1;C16.1,Filtered analog supply
+NRST,U1.7;R8.2;C17.1;SW1.1;J3.5,Reset input
+BOOT0,U1.44;R9.1;J6.2,J6 normally open
+BOOT1,U1.20;R15.1,PB2 pulled down
+UART_TX,U1.30;J2.2,MCU PA9
+UART_RX,U1.31;J2.3,MCU PA10
+SWDIO,U1.34;J3.3,MCU PA13
+SWCLK,U1.37;J3.4,MCU PA14 not +3V3
+FLOW_RAW,J4.3;R10.2;R11.1,Open collector assumption only
+FLOW_PULSE,R11.2;U1.10;C20.1,MCU PA0
+LEVEL_TRIG_MCU,U1.11;R12.1,MCU PA1
+LEVEL_TRIG,R12.2;J5.3,Confirm sensor accepts 3V3
+LEVEL_ECHO_RAW,J5.4;R13.1,Assumed 5V maximum nominal
+LEVEL_ECHO,R13.2;R14.1;U1.12,MCU PA2 divided input
+BUZZER_DRIVE,U1.18;R6.1,MCU PB0
+BUZZER_BASE,R6.2;R7.1;Q1.1,Not flyback cathode
+BUZZER_RETURN,Q1.3;BUZ1.NEG;D3.A,Switched return NOT direct GND
+LED_GREEN_DRIVE,U1.29;R16.1,MCU PA8
+LED_GREEN,R16.2;D4.A_GREEN,LED pad mapping pending
+LED_RED_DRIVE,U1.19;R17.1,MCU PB1
+LED_RED,R17.2;D4.A_RED,LED pad mapping pending
+UNCONNECTED,U1.2;U1.3;U1.4;U1.5;U1.6;U1.13;U1.14;U1.15;U1.16;U1.17;U1.21;U1.22;U1.25;U1.26;U1.27;U1.28;U1.32;U1.33;U1.38;U1.39;U1.40;U1.41;U1.42;U1.43;U1.45;U1.46,Separate NC flags; NOT one electrically connected net

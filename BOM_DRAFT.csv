@@ -1,0 +1,46 @@
+Reference,Qty,Value or candidate,Footprint status,Approval
+U1,1,STM32F103C8T6,LQFP48 7x7mm pitch0.5mm; library mapping pending,Datasheet pinout reviewed
+U2,1,TPS54302DDCR,SOT23-THIN6 DDC; library mapping pending,Reference application reviewed
+U3,1,LD1117S33TR,SOT223; tab VOUT,Datasheet pinout reviewed
+Q1,1,"PMBT3904,215",SOT23; 1B 2E 3C,Datasheet pinout reviewed
+L1,1,10uH shielded; saturation and RMS rating TBD,Envelope only,Select exact part
+R1,1,49.9ohm 1%,0603 provisional,Reference network
+R2,1,100kohm 1%,0603 provisional,Reference network
+R3,1,13.3kohm 1%,0603 provisional,Reference network
+R4,1,511kohm 1%,0603 provisional,Reference network
+R5,1,105kohm 1%,0603 provisional,Reference network
+R6,1,1kohm,0603 provisional,Buzzer current confirmation
+R7,1,100kohm,0603 provisional,Base pull-down
+R8 R9 R10 R15,4,10kohm,0603 provisional,Reset boot and pulse pull resistors
+R11 R12 R16 R17,4,1kohm,0603 provisional,Signal series and LED resistors
+R13,1,12kohm 1%,0603 provisional,Echo divider assumption
+R14,1,18kohm 1%,0603 provisional,Echo divider assumption
+C1,1,10uF 35V X7R with DC bias allowance,1210 provisional,Input capacitor rating review
+C2,1,100nF 50V X7R,0603 provisional,Input bypass
+C3,1,100nF 16V X7R,0603 provisional,Bootstrap
+C4 C5,2,22uF 10V X7R with DC bias allowance,1210 provisional,Output stability review
+C6,1,75pF C0G,0603 provisional,Feed-forward
+C7,1,100nF 16V X7R,0603 provisional,LDO input
+C8,1,10uF minimum 10V compatible ESR,TBD,LDO stability review
+C10 C11 C12 C14 C15 C17,6,100nF 10V X7R,0603 provisional,MCU bypass and reset
+C13,1,10uF 10V X7R,0805 provisional,MCU bulk
+C16,1,1uF 10V X7R,0603 provisional,Analog supply
+C20,1,1nF C0G,0603 provisional,Pulse filter validate bandwidth
+FB1,1,Ferrite bead current and impedance TBD,0603 provisional,Analog supply filter
+F1,1,Resettable fuse candidate 0.5A hold,TBD,Load and trip coordination pending
+D1,1,Series Schottky reverse polarity protection,TBD,Select voltage current and thermal ratings
+D2,1,Input transient suppressor,TBD,Clamp voltage and fuse coordination pending
+D3,1,Buzzer flyback diode,TBD,Select after buzzer type and current
+D4,1,Red green common-cathode indicator,TBD,Match CAD two-colour status behavior
+BUZ1,1,Active 5V buzzer <=20mA candidate,12mm envelope only,Exact part and polarity pending
+J1,1,2pin power connector,TBD keyed part,12V DC only
+J2,1,4pin UART header,TBD keyed part,Board-perspective TX RX labels
+J3,1,5pin SWD header,TBD keyed part,Supply reference not power input
+J4,1,3pin FLOW connector,TBD keyed part,Open-collector sensor only
+J5,1,4pin LEVEL connector,TBD keyed part,Ultrasonic interface assumptions
+J6,1,2pin BOOT jumper,TBD,Normally open
+SW1,1,Reset normally-open switch,TBD,NRST to GND
+ESD_FLOW ESD_LEVEL ESD_DEBUG,3,Connector ESD protection arrays,TBD,Select and add to final netlist before layout
+FLOW_SENSOR,1,5V open-collector pulse flow sensor,Generic inline envelope only,Vendor range and calibration unknown
+LEVEL_SENSOR,1,5V trigger echo level sensor,Generic probe envelope only,Blind zone and wet environment suitability unknown
+PCB,1,110x110x1.6mm two-layer proposal,Mechanical blank only,No copper or routing

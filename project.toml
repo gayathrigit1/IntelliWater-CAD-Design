@@ -1,0 +1,12 @@
+title = "intelliwater-smart-water-monitoring-and-conservation-system"
+
+[settings.app]
+[settings.meta]
+id = "8fe9ce37-7074-42ee-83a7-92a87af84c57"
+
+[settings.modeling]
+[cloud."zoo.dev"]
+project_id = "756357f2-9713-4359-9565-c48f21d7eb96"
+
+[zookeeper."zoo.dev"]
+conversation_ids = [ "67b93fad-aa23-4586-833a-f7ae80968984" ]
